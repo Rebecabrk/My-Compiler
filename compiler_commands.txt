@@ -1,0 +1,4 @@
+flex <filename>.l
+bison -d <filename>.y
+g++ <filename>.c <filename>.c ... 
+./a.out
