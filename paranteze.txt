@@ -1,0 +1,80 @@
+{
+               bool isInt;
+               bool error = false;
+               reverse(expression_literals.begin(), expression_literals.end());
+               if(!expression_literals.empty()){
+
+                    if (holds_alternative<int>(expression_literals[0])) {
+                         isInt = true;
+                    }
+                    else if (holds_alternative<float>(expression_literals[0])) {
+                         isInt = false;
+                    }else {
+                         int i=1;
+                         while(holds_alternative<char>(expression_literals[i])){
+                              i++;
+                         }
+                         if (holds_alternative<int>(expression_literals[i])) {
+                              isInt = true;
+                         }
+                         else if (holds_alternative<float>(expression_literals[i])) {
+                              isInt = false;
+                         }
+                    }
+
+                    for(int i = 0; i < expression_literals.size(); i++){
+                         if(isInt == true){
+                              if(holds_alternative<int>(expression_literals[i])){
+
+                              }else {yyerror("cannot use expression with multiple types!"); error = true;}
+                         }else {
+                              if(holds_alternative<int>(expression_literals[i])){
+                                   yyerror("cannot use expression with multiple types!");
+                                   error = true;
+                              }else {}
+                         }
+                    }
+                    int j = 0;
+                    for(int i = 0; i < expression_op.size() && j < expression_literals.size() ; i++){
+                         while(holds_alternative<char>(expression_literals[j])){
+                              expression += to_string(get<char>(expression_literals[j]));
+                              expression += " ";
+                              j++;
+                         }
+                         if(isInt == true)
+                              {expression += to_string(get<int>(expression_literals[j])); j++;}
+                         else
+                              {expression += to_string(get<float>(expression_literals[j])); j++;}
+                         expression += " ";
+                         expression += expression_op[i];
+                         expression += " ";
+                    }
+                    while(j < expression_literals.size()){
+                         if (holds_alternative<int>(expression_literals[j])) {
+                              expression += to_string(get<int>(expression_literals[j])); j++;
+                              expression += " ";
+                         }
+                         else if (holds_alternative<float>(expression_literals[j])) {
+                              expression += to_string(get<float>(expression_literals[j])); j++;
+                              expression += " ";
+                         }else {
+                              expression += to_string(get<char>(expression_literals[j])); j++;
+                              expression += " ";
+                         }
+                              
+                    }
+                    cout<<expression<<endl;
+                    if(error == false){
+                         if(isInt){
+                              int result = eval.evaluate(expression);
+                              ids.addVar($1, $2, "main", result);
+                         }else{
+                              float result = eval.evaluate(expression);
+                              ids.addVar($1, $2, "main", result);
+                         }
+                    }     
+               }else {yyerror("there is no expression!");}
+               expression_literals.clear();
+               expression_op.clear();
+               expression.clear();
+         }

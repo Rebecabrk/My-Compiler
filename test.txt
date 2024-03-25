@@ -1,0 +1,18 @@
+integer a = 3 + 3;
+
+fn integer convert(integer a){
+    integer b = 2 / 1;
+}
+
+class car {
+    integer c = 2;
+    integer a = 3 - 4 * 20 / 2;
+}
+
+fn integer func(a = 3 + 4, funtioninside(3, 4)){
+    integer a;
+}
+
+begin_code
+integer a = 2 + 2 * 4 + a;
+end_code
